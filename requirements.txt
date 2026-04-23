@@ -1,0 +1,10 @@
+langchain
+langchain-community
+faiss-cpu
+sentence-transformers
+rank-bm25
+fastapi
+uvicorn
+openai
+scikit-learn
+numpy
