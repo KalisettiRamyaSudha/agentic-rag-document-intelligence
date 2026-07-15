@@ -1,9 +1,13 @@
 # AGENTS.md
 
 ## Project objective
-Build a production-oriented Agentic Document Intelligence and Evaluation Platform using FastAPI, LangGraph, BM25, FAISS, cross-encoder reranking, structured citations, and a reproducible evaluation harness.
+
+Build a production-oriented Agentic Document Intelligence and Evaluation
+Platform using FastAPI, LangGraph, BM25, FAISS, cross-encoder reranking,
+structured citations, and a reproducible evaluation harness.
 
 ## Architecture rules
+
 - All retrieval systems must use the same canonical `ChunkRecord` collection.
 - Raw text must never be used as a document identity.
 - Use stable `document_id` and `chunk_id` values.
@@ -16,6 +20,7 @@ Build a production-oriented Agentic Document Intelligence and Evaluation Platfor
 - Evaluation code must remain separate from production request handling.
 
 ## Code quality
+
 - Use Python 3.12.
 - Use a `src/` package layout.
 - Use Pydantic v2 models.
@@ -30,6 +35,7 @@ Build a production-oriented Agentic Document Intelligence and Evaluation Platfor
 - Never commit credentials or sensitive data.
 
 ## Testing
+
 Before finishing a task, run:
 
 ```bash
@@ -52,12 +58,14 @@ make test-agent-paths
 ```
 
 ## LLM testing
+
 - Unit and required CI tests must use fake or stub providers.
 - Tests must not require `OPENAI_API_KEY`.
 - Do not make network calls in unit tests.
 - Keep provider interfaces replaceable.
 
 ## Change boundaries
+
 - Keep each task narrowly scoped.
 - Avoid unrelated refactoring.
 - Preserve backward compatibility unless the task explicitly changes a contract.
