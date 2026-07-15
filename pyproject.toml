@@ -1,0 +1,30 @@
+[project]
+name = "agentic-rag-document-intelligence"
+version = "0.1.0"
+description = "Agentic document intelligence demo with canonical ingestion and retrieval evaluation roadmap."
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic==2.13.4",
+    "pydantic-settings==2.12.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy==1.19.0",
+    "pytest==9.0.3",
+    "ruff==0.14.9",
+]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "scripts", "tests"]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+mypy_path = "src"
+files = ["src", "scripts", "tests"]

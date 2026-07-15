@@ -8,3 +8,9 @@ uvicorn
 openai
 scikit-learn
 numpy
+# Project foundation tooling and typed settings/models
+pydantic==2.13.4
+pydantic-settings==2.12.0
+pytest==9.0.3
+ruff==0.14.9
+mypy==1.19.0
