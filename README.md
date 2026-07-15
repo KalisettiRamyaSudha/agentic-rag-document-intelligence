@@ -1,133 +1,81 @@
-# Insurance Policy RAG System
+# Agentic RAG Document Intelligence
 
-An **Agentic Retrieval-Augmented Generation (RAG)** system built for P&C insurance policy document intelligence. Combines hybrid retrieval, cross-encoder reranking, and LLM reasoning to answer questions over insurance policy collections.
+This repository is a work-in-progress insurance document intelligence demo. The current migration focus is **canonical ingestion**: deterministic document/chunk records with stable identifiers, checksums, metadata, SQLite persistence, JSONL exports, and tests.
 
-## Architecture
+The application is **not production-ready**. Hybrid retrieval, Reciprocal Rank Fusion, typed LangGraph orchestration, citation validation, Docker, and deployment are documented in the roadmap but are not implemented in this migration step.
 
+## Current architecture status
+
+Implemented:
+- `src/document_intelligence` package layout
+- Pydantic v2 `DocumentRecord`, `ChunkRecord`, and `ChunkMetadata` models
+- Stable document/chunk identifiers and content checksums
+- Manifest-driven ingestion of multiple logical policy documents from `data/documents.txt`
+- Section-aware chunking with preamble preservation and bounded subchunks
+- SQLite persistence plus `documents.jsonl`, `chunks.jsonl`, and `manifest.json`
+- Ruff, mypy, pytest, Makefile commands, and GitHub Actions CI
+
+Legacy demo files are still present at the repository root (`ingest.py`, `hybrid_retriever.py`, `agent.py`, `app.py`, and related scripts). They are preserved for compatibility and will be migrated in later phases.
+
+## Repository
+
+```bash
+git clone https://github.com/KalisettiRamyaSudha/agentic-rag-document-intelligence.git
+cd agentic-rag-document-intelligence
 ```
-User Query
-    │
-    ▼
-┌─────────────────────────┐
-│   Hybrid Retriever      │
-│  (BM25 + FAISS Dense)   │
-└──────────┬──────────────┘
-           │
-           ▼
-┌─────────────────────────┐
-│  Cross-Encoder Reranker │
-│  (ms-marco-MiniLM-L6)   │
-└──────────┬──────────────┘
-           │
-           ▼
-┌─────────────────────────┐
-│   LLM Answer Generation │
-│   (OpenAI GPT-3.5)      │
-└──────────┬──────────────┘
-           │
-           ▼
-   Structured Response
-   (Answer + Sources)
-```
-
-## Why Hybrid Retrieval?
-
-Insurance documents contain both **specific identifiers** (policy numbers, coverage codes, dollar amounts) and **conceptual language** (exclusions, endorsements, liability terms). A single retrieval strategy fails:
-
-- **BM25 alone** misses semantic similarity — "What's not covered?" won't match "exclusions"
-- **Dense vectors alone** miss exact terms — policy numbers and coverage limits need keyword matching
-
-Hybrid retrieval combines both, with a cross-encoder reranker to filter noise before the LLM generates an answer.
-
-## Features
-
-- **Hybrid Retrieval**: BM25 (keyword) + FAISS (semantic) search with deduplication
-- **Cross-Encoder Reranking**: ms-marco-MiniLM-L-6-v2 for relevance scoring
-- **Agentic RAG Pipeline**: Structured pipeline with retrieval → reranking → generation
-- **Auditable Responses**: Returns answer + source documents for traceability
-- **FastAPI Endpoint**: Production-ready REST API
-- **Retrieval Evaluation**: Cosine similarity scoring and precision@k metrics
-
-## Dataset
-
-Synthetic P&C insurance policy documents covering:
-- Homeowners (HO-3) policy with full coverage sections (A–F)
-- Property and liability exclusions
-- Commercial auto policy
-- General liability policy
-- Workers compensation policy
-- Umbrella/excess liability policy
-- Professional liability (E&O)
-- Business owners policy (BOP)
-- Cyber liability policy
-- Inland marine / contractors equipment
-- Endorsements (water backup, scheduled property, identity theft)
-- Claims procedures and FNOL requirements
 
 ## Setup
 
-```bash
-# Clone the repo
-git clone https://github.com/KalisettiRamyaSudha/agentic-rag-insurance.git
-cd agentic-rag-insurance
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Build the vector store
-python ingest.py
-
-# Run tests
-python test_pipeline.py
-
-# Run evaluation
-python evaluation.py
-
-# Start the API server
-uvicorn app:app --reload
-```
-
-## API Usage
+Use Python 3.12 or newer.
 
 ```bash
-# Query the insurance knowledge base
-curl -X POST http://localhost:8000/ask \
-  -H "Content-Type: application/json" \
-  -d '{"question": "What exclusions apply to flood damage?"}'
+python -m pip install -e '.[dev]'
 ```
 
-Response:
-```json
-{
-  "answer": "Flood damage is excluded under Section 8.1...",
-  "sources": ["SECTION 8: EXCLUSIONS - PROPERTY COVERAGE..."],
-  "retrieval_count": 8
-}
-```
+## Build the canonical store
 
-## Tech Stack
-
-| Component | Technology |
-|-----------|-----------|
-| Keyword Search | BM25 (rank_bm25) |
-| Vector Search | FAISS + all-MiniLM-L6-v2 |
-| Reranker | CrossEncoder ms-marco-MiniLM-L-6-v2 |
-| LLM | OpenAI GPT-3.5-turbo |
-| API | FastAPI |
-| Orchestration | LangChain |
-| Evaluation | scikit-learn, SentenceTransformers |
-
-## Configuration
-
-Set your OpenAI API key:
 ```bash
-export OPENAI_API_KEY="your-key-here"
+python scripts/build_canonical_store.py
 ```
 
-Without an API key, the system runs in local mode — returning retrieved context without LLM generation.
+By default this writes generated artifacts under `canonical_store/`:
 
-## Evaluation Results
+- `chunks.sqlite`
+- `documents.jsonl`
+- `chunks.jsonl`
+- `manifest.json`
 
-Run `python evaluation.py` to evaluate retrieval quality across 8 insurance-domain test queries measuring:
-- **Cosine Similarity**: Semantic alignment between query and retrieved documents
-- **Precision@k**: Percentage of retrieved documents containing relevant keywords
+Generated canonical-store artifacts are ignored by Git.
+
+## Checks
+
+```bash
+make lint
+make typecheck
+make test
+make test-ingestion
+```
+
+## Roadmap
+
+See [`ROADMAP.md`](ROADMAP.md) for the planned phases.
+
+Near-term completed/focused phases:
+1. Project foundation
+2. Canonical ingestion and stable identifiers
+
+Later phases:
+- Canonical BM25/FAISS retrieval over the same chunks
+- Reciprocal Rank Fusion and typed `RetrievalHit`
+- Typed LangGraph orchestration
+- Citation validation and abstention
+- Evaluation harness
+- API hardening
+- Docker, CI hardening, observability, and deployment
+
+## Known limitations
+
+- Retrieval still uses the legacy proof-of-concept implementation and has not yet been migrated to canonical chunks.
+- `make test-ingestion` validates canonical ingestion only; it is not a retrieval quality test.
+- LLM answer generation is still demo-oriented and is not part of this canonical ingestion migration.
+- The synthetic dataset is fixture data for development and evaluation scaffolding, not real insurance policy data.
