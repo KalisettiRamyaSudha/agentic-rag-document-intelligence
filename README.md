@@ -77,6 +77,9 @@ pip install -r requirements.txt
 # Build the vector store
 python ingest.py
 
+# Build the canonical document/chunk store (Phase 1 migration)
+python scripts/build_canonical_store.py
+
 # Run tests
 python test_pipeline.py
 
