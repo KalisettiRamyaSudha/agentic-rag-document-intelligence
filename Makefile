@@ -1,4 +1,4 @@
-.PHONY: lint typecheck test test-retrieval
+.PHONY: lint typecheck test test-ingestion
 
 lint:
 	python -m ruff check src scripts tests
@@ -9,5 +9,5 @@ typecheck:
 test:
 	python -m pytest tests
 
-test-retrieval:
+test-ingestion:
 	python -m pytest tests/test_canonical_ingestion.py

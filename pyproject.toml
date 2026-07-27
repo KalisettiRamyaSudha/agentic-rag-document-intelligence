@@ -1,11 +1,26 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "agentic-rag-document-intelligence"
 version = "0.1.0"
 description = "Agentic document intelligence demo with canonical ingestion and retrieval evaluation roadmap."
 requires-python = ">=3.12"
 dependencies = [
+    "fastapi==0.139.0",
+    "faiss-cpu==1.14.3",
+    "langchain==1.3.13",
+    "langchain-community==0.4.2",
+    "numpy==2.5.1",
+    "openai==2.45.0",
     "pydantic==2.13.4",
     "pydantic-settings==2.12.0",
+    "python-dotenv==1.2.2",
+    "rank-bm25==0.2.2",
+    "scikit-learn==1.9.0",
+    "sentence-transformers==5.6.0",
+    "uvicorn==0.51.0",
 ]
 
 [project.optional-dependencies]
@@ -15,6 +30,9 @@ dev = [
     "ruff==0.14.9",
 ]
 
+[tool.setuptools.packages.find]
+where = ["src"]
+
 [tool.ruff]
 line-length = 100
 src = ["src", "scripts", "tests"]
@@ -22,6 +40,10 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
 
 [tool.mypy]
 python_version = "3.12"

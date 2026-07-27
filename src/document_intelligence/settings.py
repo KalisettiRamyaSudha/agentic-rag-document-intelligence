@@ -15,19 +15,24 @@ class Settings(BaseSettings):
 
     project_root: Path = Field(default_factory=lambda: Path(__file__).resolve().parents[2])
     canonical_store_dir: Path = Path("canonical_store")
-    dataset_path: Path = Path("data/documents.txt")
+    ingestion_source: Path = Path("data/policy_manifest.json")
     document_version: str = "v1"
+    max_chunk_tokens: int = 220
 
     @property
-    def resolved_dataset_path(self) -> Path:
-        return self.project_root / self.dataset_path
+    def resolved_ingestion_source(self) -> Path:
+        return self.project_root / self.ingestion_source
 
     @property
     def sqlite_path(self) -> Path:
         return self.project_root / self.canonical_store_dir / "chunks.sqlite"
 
     @property
-    def jsonl_path(self) -> Path:
+    def documents_jsonl_path(self) -> Path:
+        return self.project_root / self.canonical_store_dir / "documents.jsonl"
+
+    @property
+    def chunks_jsonl_path(self) -> Path:
         return self.project_root / self.canonical_store_dir / "chunks.jsonl"
 
     @property

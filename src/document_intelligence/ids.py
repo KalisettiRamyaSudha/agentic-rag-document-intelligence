@@ -35,6 +35,6 @@ def make_document_id(source_uri: str, version: str) -> str:
     return _digest(f"{source_uri}\n{version}")
 
 
-def make_chunk_id(document_id: str, chunk_index: int) -> str:
-    """Create a deterministic ordinal chunk ID scoped to a parent document."""
-    return f"{document_id}:{chunk_index:04d}"
+def make_chunk_id(document_id: str, section_key: str, subchunk_ordinal: int) -> str:
+    """Create a deterministic chunk ID scoped to document, section, and subchunk."""
+    return f"{document_id}:{section_key}:{subchunk_ordinal:04d}"
