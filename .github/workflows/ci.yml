@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install package
+        run: python -m pip install -e '.[dev]'
+      - name: Lint
+        run: make lint
+      - name: Typecheck
+        run: make typecheck
+      - name: Test
+        run: make test
+      - name: Ingestion smoke build
+        run: |
+          python scripts/build_canonical_store.py \
+            --sqlite /tmp/canonical/chunks.sqlite \
+            --documents-jsonl /tmp/canonical/documents.jsonl \
+            --chunks-jsonl /tmp/canonical/chunks.jsonl \
+            --manifest /tmp/canonical/manifest.json

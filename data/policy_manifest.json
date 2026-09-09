@@ -1,0 +1,88 @@
+{
+  "collection_id": "synthetic-insurance-policies",
+  "source_file": "documents.txt",
+  "version": "v1",
+  "documents": [
+    {
+      "title": "Homeowners Policy HO-2025-0041827",
+      "policy_type": "homeowners",
+      "source_uri": "policies/homeowners-ho-2025-0041827.txt",
+      "start_section": 1,
+      "end_section": 14,
+      "effective_date": "January 1, 2025",
+      "expiration_date": "January 1, 2026"
+    },
+    {
+      "title": "Commercial Auto Policy CA-2025-0098234",
+      "policy_type": "commercial_auto",
+      "source_uri": "policies/commercial-auto-ca-2025-0098234.txt",
+      "start_section": 15,
+      "end_section": 18,
+      "effective_date": "March 1, 2025",
+      "expiration_date": "March 1, 2026"
+    },
+    {
+      "title": "General Liability Policy GL-2025-0076543",
+      "policy_type": "general_liability",
+      "source_uri": "policies/general-liability-gl-2025-0076543.txt",
+      "start_section": 19,
+      "end_section": 21,
+      "effective_date": "June 1, 2025",
+      "expiration_date": "June 1, 2026"
+    },
+    {
+      "title": "Workers Compensation Policy WC-2025-0054321",
+      "policy_type": "workers_compensation",
+      "source_uri": "policies/workers-compensation-wc-2025-0054321.txt",
+      "start_section": 22,
+      "end_section": 24,
+      "effective_date": "April 1, 2025",
+      "expiration_date": "April 1, 2026"
+    },
+    {
+      "title": "Umbrella Policy UB-2025-0032198",
+      "policy_type": "umbrella",
+      "source_uri": "policies/umbrella-ub-2025-0032198.txt",
+      "start_section": 25,
+      "end_section": 26,
+      "effective_date": "June 1, 2025",
+      "expiration_date": "June 1, 2026"
+    },
+    {
+      "title": "Professional Liability Policy PL-2025-0087654",
+      "policy_type": "professional_liability",
+      "source_uri": "policies/professional-liability-pl-2025-0087654.txt",
+      "start_section": 27,
+      "end_section": 27,
+      "effective_date": "July 1, 2025",
+      "expiration_date": "July 1, 2026"
+    },
+    {
+      "title": "Business Owners Policy BOP-2025-0045678",
+      "policy_type": "business_owners",
+      "source_uri": "policies/business-owners-bop-2025-0045678.txt",
+      "start_section": 28,
+      "end_section": 28,
+      "effective_date": "September 1, 2025",
+      "expiration_date": "September 1, 2026"
+    },
+    {
+      "title": "Cyber Liability Policy CY-2025-0023456",
+      "policy_type": "cyber_liability",
+      "source_uri": "policies/cyber-liability-cy-2025-0023456.txt",
+      "start_section": 29,
+      "end_section": 29,
+      "effective_date": "October 1, 2025",
+      "expiration_date": "October 1, 2026"
+    },
+    {
+      "title": "Inland Marine Contractors Equipment Policy IM-2025-0011234",
+      "policy_type": "inland_marine",
+      "source_uri": "policies/inland-marine-im-2025-0011234.txt",
+      "start_section": 30,
+      "end_section": 30,
+      "effective_date": "April 1, 2025",
+      "expiration_date": "April 1, 2026"
+    }
+  ]
+}
